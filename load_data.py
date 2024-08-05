@@ -14,5 +14,5 @@ class LoadData:
             self.db_manager.execute_query("INSERT INTO rooms(id, name) VALUES (%s, %s)", (room['id'], room['name']))
 
         for student in students:
-            self.db_manager.execute_query("""INSERT INTO students(id, name, birthday, id_room, sex) 
-                     VALUES (%s, %s, %s, %s, %s)""", (student['id'], student['name'], student['birthday'], student['id_room'], student['sex']))
+            self.db_manager.execute_query("""INSERT INTO students(id, name, birthday, room, sex) 
+                     VALUES (%s, %s, %s, %s, %s)""", (student['id'], student['name'], student['birthday'], student['room'], student['sex']))

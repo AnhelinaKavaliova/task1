@@ -9,7 +9,7 @@ class Queries:
         query = """
                  SELECT r.name AS room_name, COUNT(s.id) AS student_count
                  FROM rooms r 
-                 LEFT JOIN students s ON r.id = s.id_room
+                 LEFT JOIN students s ON r.id = s.room
                  GROUP BY r.id, r.name;
                  """
 
@@ -17,30 +17,35 @@ class Queries:
     
     def smallest_average_age(self):
         query = """
-                 SELECT r.name AS room_name, COUNT(s.id) AS student_count
-                 FROM rooms r 
-                 LEFT JOIN students s ON r.id = s.id_room
-                 GROUP BY r.id, r.name;
-                 """
+                SELECT r.name AS room_name, AVG(TIMESTAMPDIFF(YEAR, s.birthday, CURDATE())) AS avg_age
+                FROM rooms r 
+                JOIN students s ON r.id = s.room
+                GROUP BY r.id, r.name
+                ORDER BY avg_age
+                LIMIT 5;
+                """
         
         return self.db_manager.execute_query(query)
     
     def biggest_gap_age(self):
         query = """
-                 SELECT r.name AS room_name, COUNT(s.id) AS student_count
-                 FROM rooms r 
-                 LEFT JOIN students s ON r.id = s.id_room
-                 GROUP BY r.id, r.name;
-                 """
+                SELECT r.name AS room_name, MAX(TIMESTAMPDIFF(YEAR, s.birthday, CURDATE())) - MIN(TIMESTAMPDIFF(YEAR, s.birthday, CURDATE())) AS age_gap
+                FROM rooms r 
+                JOIN students s ON r.id = s.room
+                GROUP BY r.id, r.name
+                ORDER BY age_gap DESC
+                LIMIT 5;
+                """
         
         return self.db_manager.execute_query(query)
     
     def rooms_different_sex(self):
         query = """
-                 SELECT r.name AS room_name, COUNT(s.id) AS student_count
-                 FROM rooms r 
-                 LEFT JOIN students s ON r.id = s.id_room
-                 GROUP BY r.id, r.name;
+                SELECT r.name AS room_name
+                FROM rooms r
+                JOIN students s ON r.id = s.room
+                GROUP BY r.id, r.name
+                HAVING COUNT(DISTINCT s.sex) > 1;
                  """
         
         return self.db_manager.execute_query(query)
