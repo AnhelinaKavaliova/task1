@@ -19,10 +19,17 @@ def main():
 
     results = {}
 
-    rooms = query_executor.list_students_in_rooms()
-    results["students_in_rooms"] = [{"room_name": room[0], "students_count": room[1]} for room in rooms]
-    for room in rooms:
-        print(room)
+    # rooms = query_executor.list_students_in_rooms()
+    # results["students_in_rooms"] = [{"room_name": room[0], "students_count": room[1]} for room in rooms]
+    
+    smallest_age_rooms = query_executor.smallest_average_age()
+    results["smallest_age_rooms"] = [{"room_name":room[0], "avg_age":room[1]} for room in smallest_age_rooms]
+
+    biggest_age_gap_rooms = query_executor.biggest_gap_age()
+    results["biggest_age_gap_rooms"] = [{"room_name":room[0], "age_gap":room[1]} for room in biggest_age_gap_rooms]
+
+    different_sex_rooms = query_executor.rooms_different_sex()
+    results["different_sex_rooms"] = [{"room_name":room[0]} for room in different_sex_rooms]
 
     query_executor.export_results(args.format, results, args.output_name)
 

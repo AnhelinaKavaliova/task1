@@ -1,4 +1,5 @@
 import json
+from decimal import Decimal
 #import
 
 class Queries:
@@ -56,7 +57,12 @@ class Queries:
 
     def export_json(self, data, filename):
         with open(f"{filename}.json", 'w') as f:
-            json.dump(data, f, indent = 2)
+            json.dump(data, f, default= self._decimal_default, indent = 2)
 
     def export_xml(self, data, filename):
         return
+    
+    def _decimal_default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+ 
