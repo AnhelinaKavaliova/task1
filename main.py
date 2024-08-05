@@ -19,8 +19,8 @@ def main():
 
     results = {}
 
-    # rooms = query_executor.list_students_in_rooms()
-    # results["students_in_rooms"] = [{"room_name": room[0], "students_count": room[1]} for room in rooms]
+    rooms = query_executor.list_students_in_rooms()
+    results["students_in_rooms"] = [{"room_name": room[0], "students_count": room[1]} for room in rooms]
     
     smallest_age_rooms = query_executor.smallest_average_age()
     results["smallest_age_rooms"] = [{"room_name":room[0], "avg_age":room[1]} for room in smallest_age_rooms]
