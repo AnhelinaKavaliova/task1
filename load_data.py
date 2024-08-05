@@ -16,3 +16,5 @@ class LoadData:
         for student in students:
             self.db_manager.execute_query("""INSERT INTO students(id, name, birthday, room, sex) 
                      VALUES (%s, %s, %s, %s, %s)""", (student['id'], student['name'], student['birthday'], student['room'], student['sex']))
+            
+        self.db_manager.commit()

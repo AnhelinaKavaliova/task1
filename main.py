@@ -15,7 +15,7 @@ def main():
     data_loader = LoadData(db_manager)
     query_executor = Queries(db_manager)
 
-    #data_loader.load_data(args.students, args.rooms)
+    data_loader.load_data(args.students, args.rooms)
 
     results = {}
 
