@@ -12,7 +12,7 @@ class Queries:
                  SELECT r.name AS room_name, COUNT(s.id) AS student_count
                  FROM rooms r 
                  LEFT JOIN students s ON r.id = s.room
-                 GROUP BY r.id, r.name;
+                 GROUP BY r.name;
                  """
 
         return self.db_manager.execute_query(query)
@@ -22,7 +22,7 @@ class Queries:
                 SELECT r.name AS room_name, AVG(TIMESTAMPDIFF(YEAR, s.birthday, CURDATE())) AS avg_age
                 FROM rooms r 
                 JOIN students s ON r.id = s.room
-                GROUP BY r.id, r.name
+                GROUP BY r.name
                 ORDER BY avg_age
                 LIMIT 5;
                 """
@@ -34,7 +34,7 @@ class Queries:
                 SELECT r.name AS room_name, MAX(TIMESTAMPDIFF(YEAR, s.birthday, CURDATE())) - MIN(TIMESTAMPDIFF(YEAR, s.birthday, CURDATE())) AS age_gap
                 FROM rooms r 
                 JOIN students s ON r.id = s.room
-                GROUP BY r.id, r.name
+                GROUP BY r.name
                 ORDER BY age_gap DESC
                 LIMIT 5;
                 """
@@ -46,7 +46,7 @@ class Queries:
                 SELECT r.name AS room_name
                 FROM rooms r
                 JOIN students s ON r.id = s.room
-                GROUP BY r.id, r.name
+                GROUP BY r.name
                 HAVING COUNT(DISTINCT s.sex) > 1;
                  """
         
