@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from decimal import Decimal
 from typing import Any, Dict
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("export_data")
 
 
 class DataExporter:
@@ -19,22 +19,28 @@ class DataExporter:
             logger.error("Failed to export")
 
     def export_json(self, data: Dict[str, Any], filename: str) -> None:
-        with open(f"{filename}.json", "w") as f:
-            json.dump(data, f, default=self._decimal_default, indent=2)
+        try:
+            with open(f"{filename}.json", "w") as f:
+                json.dump(data, f, default=self._decimal_default, indent=2)
+        except FileNotFoundError as err:
+            logger.error(f"Error: {err}")
 
     def export_xml(self, data: Dict[str, Any], filename: str) -> None:
-        root = ET.Element("results")
+        try:
+            root = ET.Element("results")
 
-        for query, items in data.items():
-            query_element = ET.SubElement(root, query)
-            for item in items:
-                item_element = ET.SubElement(query_element, "item")
-                for key, value in item.items():
-                    sub_element = ET.SubElement(item_element, key)
-                    sub_element.text = str(value)
+            for query, items in data.items():
+                query_element = ET.SubElement(root, query)
+                for item in items:
+                    item_element = ET.SubElement(query_element, "item")
+                    for key, value in item.items():
+                        sub_element = ET.SubElement(item_element, key)
+                        sub_element.text = str(value)
 
-        tree = ET.ElementTree(root)
-        tree.write(f"{filename}.xml", encoding="utf-8", xml_declaration=True)
+            tree = ET.ElementTree(root)
+            tree.write(f"{filename}.xml", encoding="utf-8", xml_declaration=True)
+        except FileNotFoundError as err:
+            logger.erro(f"Error: {err}")
 
     def _decimal_default(self, obj) -> float:
         if isinstance(obj, Decimal):

@@ -3,7 +3,7 @@ from typing import Any, List, Tuple
 
 import mysql.connector
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("db_manager")
 
 
 class DBManager:

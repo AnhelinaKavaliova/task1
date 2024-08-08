@@ -2,13 +2,11 @@ import argparse
 import logging
 import os
 from typing import Dict, List, Tuple, Union
-
 from dotenv import load_dotenv
-
 from db_manager import DBManager
 from export_data import DataExporter
 from load_data import LoadData
-from queries import Queries
+from student_rooms_queries import Queries
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +29,11 @@ def main() -> None:
     parser.add_argument("--output_name", help="Output file name", default="Output")
     args = parser.parse_args()
 
-    load_dotenv(dotenv_path="../.env")
+    try:
+        load_dotenv(dotenv_path="../.env")
+        logger.info("Configuration loaded successfully")
+    except Exception as err:
+        logger.error(f"Error: {err}")
 
     db_config: Dict[str, str] = {
         "host": os.getenv("HOST"),
@@ -41,14 +43,14 @@ def main() -> None:
     }
 
     try:
-        db_manager: DBManager = DBManager(**db_config)
+        db_manager = DBManager(**db_config)
         logger.info("Db connected")
     except Exception as err:
         logger.error(f"Failed to connect: {err}")
         return
-    data_loader: LoadData = LoadData(db_manager)
-    query_executor: Queries = Queries(db_manager)
-    data_exporter: DataExporter = DataExporter()
+    data_loader = LoadData(db_manager)
+    query_executor = Queries(db_manager)
+    data_exporter = DataExporter()
 
     try:
         logger.info("Loading data from rooms file")

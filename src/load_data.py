@@ -14,7 +14,7 @@ class LoadData:
 
         data: List[Tuple[int, str]] = [(room["id"], room["name"]) for room in rooms]
 
-        query: str = "INSERT INTO rooms(id, name) VALUES (%s, %s)"
+        query = "INSERT INTO rooms(id, name) VALUES (%s, %s)"
 
         self.db_manager.execute_many_query(query, data)
 
@@ -32,7 +32,7 @@ class LoadData:
             )
             for student in students
         ]
-        query: str = (
+        query = (
             """
             INSERT INTO students(id, name, birthday, room, sex)
             VALUES (%s, %s, %s, %s, %s)
