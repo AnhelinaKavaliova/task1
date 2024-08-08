@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from db_manager import DBManager
 from export_data import DataExporter
 from load_data import LoadData
-from student_rooms_queries import Queries
+from student_queries import Queries
 
 logger = logging.getLogger(__name__)
 
