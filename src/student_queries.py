@@ -1,6 +1,8 @@
 from typing import List, Tuple
 from db_manager import DBManager
+import logging
 
+logger = logging.getLogger("student_queries")
 
 class Queries:
     def __init__(self, db_manager: DBManager):
@@ -13,8 +15,7 @@ class Queries:
                  LEFT JOIN students s ON r.id = s.room
                  GROUP BY r.name;
                  """
-
-        return self.db_manager.execute_query(query)
+        return self._execute_query(query)
 
     def smallest_average_age(self) -> List[Tuple[str, float]]:
         query = """
@@ -27,7 +28,7 @@ class Queries:
                 LIMIT 5;
                 """
 
-        return self.db_manager.execute_query(query)
+        return self._execute_query(query)
 
     def biggest_gap_age(self) -> List[Tuple[str, int]]:
         query = """
@@ -41,7 +42,7 @@ class Queries:
                 LIMIT 5;
                 """
 
-        return self.db_manager.execute_query(query)
+        return self._execute_query(query)
 
     def rooms_different_sex(self) -> List[Tuple[str]]:
         query = """
@@ -52,4 +53,12 @@ class Queries:
                 HAVING COUNT(DISTINCT s.sex) > 1;
                  """
 
-        return self.db_manager.execute_query(query)
+        return self._execute_query(query)
+
+    def _execute_query(self, query: str):
+        try:
+            res = self.db_manager.execute_query(query)
+            logger.info("Query executed successfully")
+            return res
+        except Exception as err:
+            logger.error(f"Error: {err}")

@@ -34,6 +34,7 @@ def main() -> None:
         logger.info("Configuration loaded successfully")
     except Exception as err:
         logger.error(f"Error: {err}")
+        return
 
     db_config: Dict[str, str] = {
         "host": os.getenv("HOST"),
@@ -88,12 +89,14 @@ def main() -> None:
         ]
     except Exception as err:
         logger.error(f"Failed to execute: {err}")
+        return
 
     try:
         logger.info(f"Export results to {args.format}")
         data_exporter.export_results(args.format, results, args.output_name)
     except Exception as err:
         logger.error(f"Failed to export: {err}")
+        return
 
     db_manager.close()
     logger.info("Connection closed")

@@ -14,48 +14,49 @@ class DBManager:
             )
             logger.info("Db connected")
         except mysql.connector.Error as err:
-            logger.info(f"Failed to connect: {err}")
+            logger.error(f"Failed to connect: {err}")
 
     def execute_query(self, query: str) -> List[Tuple[Any, ...]]:
         try:
             mycursor = self.mydb.cursor()
             mycursor.execute(query)
-            result = mycursor.fetchall()
-            mycursor.close()
+            result = self.fetch_all(mycursor)
+            self.close(mycursor)
             logger.info(f"Query executed successfully: {query}")
             return result
         except mysql.connector.Error as err:
-            logger.info(f"Error: {err}")
+            logger.error(f"Error: {err}")
 
     def execute_many_query(self, query: str, data: List[Tuple[Any, ...]]) -> None:
         try:
             mycursor = self.mydb.cursor()
             mycursor.executemany(query, data)
             self.mydb.commit()
-            mycursor.close()
-            logger.info(f"Query executed successfully: {query}")
+            self.close(mycursor)
+            logger.info(f"Many queries executed successfully: {query}")
         except mysql.connector.Error as err:
-            logger.info(f"Error: {err}")
+            logger.error(f"Error: {err}")
 
-    def fetch_all(self) -> List[Tuple[Any, ...]]:
+    def fetch_all(self, cursor) -> List[Tuple[Any, ...]]:
         try:
-            result = self.mycursor.fetchall()
-            logger.info("Fetched all records.")
+            result = cursor.fetchall()
+            logger.debug("Fetched all records")
             return result
         except mysql.connector.Error as err:
-            logger.error(f"Error f: {err}")
+            logger.error(f"Error: {err}")
+            return None
 
     def commit(self) -> None:
         try:
             self.mydb.commit()
-            logger.info("Database commit successful.")
+            logger.info("Database commit successful")
         except mysql.connector.Error as err:
             logger.error(f"Error: {err}")
 
-    def close(self) -> None:
+    def close(self, cursor) -> None:
         try:
-            self.mycursor.close()
+            cursor.close()
             self.mydb.close()
-            logger.info("Database connection closed.")
+            logger.info("Database connection closed")
         except mysql.connector.Error as err:
             logger.error(f"Err: {err}")

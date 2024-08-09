@@ -1,12 +1,19 @@
-import pytest
 from src.student_queries import Queries
-from unittest.mock import MagicMock
+from unittest.mock import Mock, patch
+import pytest
+import logging
 
-def test_list_students_in_rooms():
-    db_manager_mock = MagicMock()
+@pytest.fixture
+def db_manager_mock():
+    yield Mock()
+
+@pytest.fixture
+def query(db_manager_mock):
+    yield Queries(db_manager_mock)
+
+def test_list_students_in_rooms(query, db_manager_mock):
     db_manager_mock.execute_query.return_value = [("Room #1", 2), ("Room #5", 10)]
 
-    query = Queries(db_manager_mock)
     result = query.list_students_in_rooms()
 
     excepted_result = [("Room #1", 2), ("Room #5", 10)]
@@ -20,11 +27,9 @@ def test_list_students_in_rooms():
                  GROUP BY r.name;
                  """)
 
-def test_smallest_average_age():
-    db_manager_mock = MagicMock()
+def test_smallest_average_age(query, db_manager_mock):
     db_manager_mock.execute_query.return_value = [("Room #1", 3.5), ("Room #5", 11.2)]
 
-    query = Queries(db_manager_mock)
     result = query.smallest_average_age()
 
     excepted_result = [("Room #1", 3.5), ("Room #5", 11.2)]
@@ -41,11 +46,9 @@ def test_smallest_average_age():
                 LIMIT 5;
                 """)
     
-def test_biggest_gap_age():
-    db_manager_mock = MagicMock()
+def test_biggest_gap_age(query, db_manager_mock):
     db_manager_mock.execute_query.return_value = [("Room #1", 2), ("Room #5", 10)]
 
-    query = Queries(db_manager_mock)
     result = query.biggest_gap_age()
 
     excepted_result = [("Room #1", 2), ("Room #5", 10)]
@@ -63,11 +66,9 @@ def test_biggest_gap_age():
                 LIMIT 5;
                 """)
     
-def test_rooms_different_sex():
-    db_manager_mock = MagicMock()
+def test_rooms_different_sex(query, db_manager_mock):
     db_manager_mock.execute_query.return_value = [("Room #1"), ("Room #5")]
 
-    query = Queries(db_manager_mock)
     result = query.rooms_different_sex()
 
     excepted_result = [("Room #1"), ("Room #5")]
@@ -81,4 +82,21 @@ def test_rooms_different_sex():
                 GROUP BY r.name
                 HAVING COUNT(DISTINCT s.sex) > 1;
                  """)
-    
+
+def test_execute_query_successfully(query, db_manager_mock):
+    with patch('src.student_queries.logger') as mock_logger:
+        db_manager_mock.execute_query.return_value = [("Room #1", 2)]
+
+        result = query.list_students_in_rooms()
+
+        assert result == [("Room #1", 2)]
+        mock_logger.info.assert_called_with("Query executed successfully")
+
+def test_execute_query_failed(query, db_manager_mock):
+    with patch('src.student_queries.logger') as mock_logger:
+        db_manager_mock.execute_query.side_effect = Exception("Test exeption")
+
+        result = query.list_students_in_rooms()
+
+        assert result == None
+        mock_logger.error.assert_called_with("Error: Test exeption")
