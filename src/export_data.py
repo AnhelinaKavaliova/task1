@@ -22,7 +22,10 @@ class DataExporter:
         try:
             with open(f"{filename}.json", "w") as f:
                 json.dump(data, f, default=self._decimal_default, indent=2)
+            logger.info("Successfully exported data")
         except FileNotFoundError as err:
+            logger.error(f"Error: {err}")
+        except Exception as err:
             logger.error(f"Error: {err}")
 
     def export_xml(self, data: Dict[str, Any], filename: str) -> None:
@@ -39,9 +42,15 @@ class DataExporter:
 
             tree = ET.ElementTree(root)
             tree.write(f"{filename}.xml", encoding="utf-8", xml_declaration=True)
+            logger.info("Successfully exported data")
         except FileNotFoundError as err:
-            logger.erro(f"Error: {err}")
+            logger.error(f"Error: {err}")
+        except Exception as err:
+            logger.error(f"Error: {err}")
+
 
     def _decimal_default(self, obj) -> float:
         if isinstance(obj, Decimal):
             return float(obj)
+        else:
+            logger.error("Object is not serializable")
