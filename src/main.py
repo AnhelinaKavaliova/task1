@@ -2,7 +2,9 @@ import argparse
 import logging
 import os
 from typing import Dict, List, Tuple, Union
+
 from dotenv import load_dotenv
+
 from db_manager import DBManager
 from export_data import DataExporter
 from load_data import LoadData
@@ -53,7 +55,7 @@ def main() -> None:
     query_executor = Queries(db_manager)
     data_exporter = DataExporter()
 
-    db_manager.execute_query("DELETE FROM students") #clearing tables for testing
+    db_manager.execute_query("DELETE FROM students")  # clearing tables for testing
     db_manager.execute_query("DELETE FROM rooms")
 
     try:

@@ -37,7 +37,7 @@ class DBManager:
             logger.info(f"Many queries executed successfully: {query}")
         except mysql.connector.Error as err:
             logger.error(f"Error: {err}")
-            raise 
+            raise
 
     def fetch_all(self, cursor) -> List[Tuple[Any, ...]]:
         try:

@@ -1,8 +1,10 @@
-from typing import List, Tuple
-from db_manager import DBManager
 import logging
+from typing import List, Tuple
+
+from db_manager import DBManager
 
 logger = logging.getLogger("student_queries")
+
 
 class Queries:
     def __init__(self, db_manager: DBManager):

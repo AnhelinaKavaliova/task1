@@ -52,7 +52,6 @@ class DataExporter:
             logger.error(f"Error: {err}")
             raise
 
-
     def _decimal_default(self, obj) -> float:
         if isinstance(obj, Decimal):
             return float(obj)

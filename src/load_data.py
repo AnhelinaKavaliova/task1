@@ -1,9 +1,11 @@
 import json
-from typing import List, Tuple
 import logging
+from typing import List, Tuple
+
 from db_manager import DBManager
 
 logger = logging.getLogger("load_data")
+
 
 class LoadData:
     def __init__(self, db_manager: DBManager) -> None:
@@ -42,12 +44,10 @@ class LoadData:
                 )
                 for student in students
             ]
-            query = (
-                """
+            query = """
                 INSERT INTO students(id, name, birthday, room, sex)
                 VALUES (%s, %s, %s, %s, %s)
                 """
-            )
 
             self.db_manager.execute_many_query(query, data)
             logger.info("Successfully loaded students into the database")
