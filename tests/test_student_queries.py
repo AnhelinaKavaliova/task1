@@ -96,7 +96,7 @@ def test_execute_query_failed(query, db_manager_mock):
     with patch('src.student_queries.logger') as mock_logger:
         db_manager_mock.execute_query.side_effect = Exception("Test exeption")
 
-        result = query.list_students_in_rooms()
+        with pytest.raises(Exception):
+            query.list_students_in_rooms()
 
-        assert result == None
         mock_logger.error.assert_called_with("Error: Test exeption")

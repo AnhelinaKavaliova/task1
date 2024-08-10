@@ -37,7 +37,8 @@ def test_export_json_file_not_found(data_exporter, mock_logger):
     filename = "file"
 
     with patch('json.dump', side_effect=FileNotFoundError("File not found")):
-        data_exporter.export_json(data, filename)
+        with pytest.raises(FileNotFoundError):
+            data_exporter.export_json(data, filename)
     
     mock_logger.error.assert_called_with("Error: File not found")
 
@@ -46,7 +47,8 @@ def test_export_json_failed(data_exporter, mock_logger):
     filename = "file"
 
     with patch('json.dump', side_effect=Exception("Test exception")):
-        data_exporter.export_json(data, filename)
+        with pytest.raises(Exception):
+            data_exporter.export_json(data, filename)
 
     mock_logger.error.assert_called_with("Error: Test exception")
 
@@ -70,7 +72,8 @@ def test_export_xml_file_not_found(data_exporter, mock_logger):
     with patch('src.export_data.ET.ElementTree') as MockElementTree:
         MockElementTree.side_effect = FileNotFoundError("File not found")
         
-        data_exporter.export_results("xml", data, filename)
+        with pytest.raises(FileNotFoundError):
+            data_exporter.export_results("xml", data, filename)
         
         mock_logger.error.assert_called_once_with("Error: File not found")
 
@@ -82,7 +85,8 @@ def test_export_xml_general_exception(data_exporter, mock_logger):
     with patch('src.export_data.ET.ElementTree') as MockElementTree:
         MockElementTree.side_effect = Exception("Test exception")
         
-        data_exporter.export_results("xml", data, filename)
+        with pytest.raises(Exception):
+            data_exporter.export_results("xml", data, filename)
         
         mock_logger.error.assert_called_once_with("Error: Test exception")
 

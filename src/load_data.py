@@ -22,8 +22,10 @@ class LoadData:
             logger.info("Successfully loaded rooms into the database")
         except FileNotFoundError as err:
             logger.error(f"Error: {err}")
+            raise
         except Exception as err:
             logger.error(f"Error: {err}")
+            raise
 
     def load_data_students(self, students_path: str) -> None:
         try:
@@ -51,5 +53,7 @@ class LoadData:
             logger.info("Successfully loaded students into the database")
         except FileNotFoundError as err:
             logger.error(f"Error: {err}")
+            raise
         except Exception as err:
             logger.error(f"Error: {err}")
+            raise

@@ -44,11 +44,9 @@ def test_execute_quary_success(db_manager_mock, mock_logger):
 def test_execute_quary_failed(db_manager_mock, mock_logger):
     db_manager_mock.mydb.cursor.side_effect = mysql.connector.Error("Execute quary failed")
 
-    result = db_manager_mock.execute_query("Select * from rooms")
-
-    assert result == None
-
-    mock_logger.error.assert_called_with("Error: Execute quary failed")
+    with pytest.raises(mysql.connector.Error):
+        db_manager_mock.execute_query("SELECT * FROM rooms")
+        mock_logger.error.assert_called_with("Error: Execute query failed")
 
 
 def test_execute_many_query_success(db_manager_mock, mock_logger):
@@ -56,7 +54,6 @@ def test_execute_many_query_success(db_manager_mock, mock_logger):
     cursor_mock.executemany = Mock()
 
     db_manager_mock.mydb.cursor.return_value = cursor_mock
-
     db_manager_mock.execute_many_query("INSERT INTO rooms(id, name) VALUES (%s, %s)", [(5, "Room #1"), (6, "Room #2")])
 
     mock_logger.info.assert_called_with("Many queries executed successfully: INSERT INTO rooms(id, name) VALUES (%s, %s)")
@@ -65,9 +62,9 @@ def test_execute_many_query_failed(db_manager_mock, mock_logger):
 
     db_manager_mock.mydb.cursor.side_effect = mysql.connector.Error("Execute quaries failed")
 
-    db_manager_mock.execute_many_query("INSERT INTO rooms(id, name) VALUES (%s, %s)", [(5, "Room #1"), (6, "Room #2")])
-
-    mock_logger.error.assert_called_with("Error: Execute quaries failed")
+    with pytest.raises(mysql.connector.Error):
+        db_manager_mock.execute_many_query("INSERT INTO rooms(id, name) VALUES (%s, %s)", [(5, "Room #1"), (6, "Room #2")])
+        mock_logger.error.assert_called_with("Error: Execute queries failed")
 
 
 def test_fetch_all_success(db_manager_mock, mock_logger):
@@ -95,18 +92,33 @@ def test_commit_success(db_manager_mock, mock_logger):
 
 def test_commit_error(db_manager_mock, mock_logger):
     db_manager_mock.mydb.commit.side_effect = mysql.connector.Error("Commit error")
-    db_manager_mock.commit()
 
-    mock_logger.error.assert_called_with("Error: Commit error")
+    with pytest.raises(mysql.connector.Error):
+        db_manager_mock.commit()
+        mock_logger.error.assert_called_with("Error: Commit error")
 
 
-def test_close_success(db_manager_mock, mock_logger):
+def test_close_cursor_success(db_manager_mock, mock_logger):
     cursor_mock = Mock()
-    db_manager_mock.close(cursor_mock)
-    mock_logger.info.assert_called_with("Database connection closed")
+    db_manager_mock.close_cursor(cursor_mock)
+    mock_logger.info.assert_called_with("Cursor connection closed")
 
-def test_close_error(db_manager_mock, mock_logger):
+def test_close_cursor_error(db_manager_mock, mock_logger):
     cursor_mock = Mock()
+    cursor_mock.close.side_effect = mysql.connector.Error("Close error")
+
+    with pytest.raises(mysql.connector.Error):
+        db_manager_mock.close_cursor(cursor_mock)
+        mock_logger.error.assert_called_with("Error: Close error")
+
+
+def test_close_db_connection_success(db_manager_mock, mock_logger):
+        db_manager_mock.close_db_connection()
+        mock_logger.info.assert_called_with("Database connection closed")
+
+def test_close_db_connection_error(db_manager_mock, mock_logger):
     db_manager_mock.mydb.close.side_effect = mysql.connector.Error("Close error")
-    db_manager_mock.close(cursor_mock)
-    mock_logger.error.assert_called_with("Err: Close error")
+    
+    with pytest.raises(mysql.connector.Error):
+        db_manager_mock.close_db_connection()
+        mock_logger.error.assert_called_with("Error: Close error")

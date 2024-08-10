@@ -25,8 +25,10 @@ class DataExporter:
             logger.info("Successfully exported data")
         except FileNotFoundError as err:
             logger.error(f"Error: {err}")
+            raise
         except Exception as err:
             logger.error(f"Error: {err}")
+            raise
 
     def export_xml(self, data: Dict[str, Any], filename: str) -> None:
         try:
@@ -45,8 +47,10 @@ class DataExporter:
             logger.info("Successfully exported data")
         except FileNotFoundError as err:
             logger.error(f"Error: {err}")
+            raise
         except Exception as err:
             logger.error(f"Error: {err}")
+            raise
 
 
     def _decimal_default(self, obj) -> float:

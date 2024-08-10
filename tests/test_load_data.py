@@ -33,14 +33,14 @@ def test_load_data_rooms_success(db_manager_mock, load_data, mock_logger):
 
 def test_load_data_rooms_file_not_found(db_manager_mock, load_data, mock_logger):
     with patch('builtins.open', side_effect = FileNotFoundError("File not found")):
-        load_data.load_data_rooms("path.json")
-
+        with pytest.raises(FileNotFoundError):
+            load_data.load_data_rooms("path.json")
     mock_logger.error.assert_called_with("Error: File not found")
 
 def test_load_data_rooms_failed(db_manager_mock, load_data, mock_logger):
     with patch('builtins.open', side_effect = Exception("Test exception")):
-        load_data.load_data_rooms("path.json")
-    
+        with pytest.raises(Exception):
+            load_data.load_data_rooms("path.json")
     mock_logger.error.assert_called_with("Error: Test exception")
 
 def test_load_data_students_success(db_manager_mock, load_data, mock_logger):
@@ -81,12 +81,12 @@ def test_load_data_students_success(db_manager_mock, load_data, mock_logger):
 
 def test_load_data_students_file_not_found(db_manager_mock, load_data, mock_logger):
     with patch('builtins.open', side_effect = FileNotFoundError("File not found")):
-        load_data.load_data_students("path.json")
-
+        with pytest.raises(FileNotFoundError):
+            load_data.load_data_students("path.json")
     mock_logger.error.assert_called_with("Error: File not found")
 
 def test_load_data_students_failed(db_manager_mock, load_data, mock_logger):
     with patch('builtins.open', side_effect = Exception("Test exception")):
-        load_data.load_data_students("path.json")
-    
+        with pytest.raises(Exception):
+            load_data.load_data_students("path.json")
     mock_logger.error.assert_called_with("Error: Test exception")

@@ -16,7 +16,7 @@ def main() -> None:
     logging.basicConfig(
         level=logging.INFO,
         filename="py_log.log",
-        format="%(asctime)s %(levelname)s %(message)s",
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
     )
     logger.info("Program started")
 
@@ -52,6 +52,9 @@ def main() -> None:
     data_loader = LoadData(db_manager)
     query_executor = Queries(db_manager)
     data_exporter = DataExporter()
+
+    db_manager.execute_query("DELETE FROM students") #clearing tables for testing
+    db_manager.execute_query("DELETE FROM rooms")
 
     try:
         logger.info("Loading data from rooms file")
@@ -98,7 +101,7 @@ def main() -> None:
         logger.error(f"Failed to export: {err}")
         return
 
-    db_manager.close()
+    db_manager.close_db_connection()
     logger.info("Connection closed")
     logger.info("Program completed")
 

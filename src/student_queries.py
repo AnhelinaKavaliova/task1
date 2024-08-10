@@ -62,3 +62,4 @@ class Queries:
             return res
         except Exception as err:
             logger.error(f"Error: {err}")
+            raise

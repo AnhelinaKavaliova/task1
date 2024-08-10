@@ -21,21 +21,23 @@ class DBManager:
             mycursor = self.mydb.cursor()
             mycursor.execute(query)
             result = self.fetch_all(mycursor)
-            self.close(mycursor)
+            self.close_cursor(mycursor)
             logger.info(f"Query executed successfully: {query}")
             return result
         except mysql.connector.Error as err:
             logger.error(f"Error: {err}")
+            raise
 
     def execute_many_query(self, query: str, data: List[Tuple[Any, ...]]) -> None:
         try:
             mycursor = self.mydb.cursor()
             mycursor.executemany(query, data)
             self.mydb.commit()
-            self.close(mycursor)
+            self.close_cursor(mycursor)
             logger.info(f"Many queries executed successfully: {query}")
         except mysql.connector.Error as err:
             logger.error(f"Error: {err}")
+            raise 
 
     def fetch_all(self, cursor) -> List[Tuple[Any, ...]]:
         try:
@@ -52,11 +54,20 @@ class DBManager:
             logger.info("Database commit successful")
         except mysql.connector.Error as err:
             logger.error(f"Error: {err}")
+            raise
 
-    def close(self, cursor) -> None:
+    def close_cursor(self, cursor) -> None:
         try:
             cursor.close()
+            logger.info("Cursor connection closed")
+        except mysql.connector.Error as err:
+            logger.error(f"Error: {err}")
+            raise
+
+    def close_db_connection(self) -> None:
+        try:
             self.mydb.close()
             logger.info("Database connection closed")
         except mysql.connector.Error as err:
-            logger.error(f"Err: {err}")
+            logger.error(f"Error: {err}")
+            raise

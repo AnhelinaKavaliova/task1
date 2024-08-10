@@ -3,3 +3,4 @@ __pycache__/
 myenv/
 *.log
 global_requirements.txt
+.pytest_cache/
