@@ -14,6 +14,18 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
+    """
+    Main function for the Task1 Database Management program.
+    This function performs the following steps:
+    1. Sets up logging to a file named "py_log.log" 
+    2. Parses command-line arguments for input files and output format
+    3. Loads environment variables from a .env file
+    4. Establishes a connection to the database
+    5. Loads data from the specified input files into the db
+    6. Executes queries 
+    7. Exports the results of the queries to the specified format 
+    8. Closes the database connection 
+    """
 
     logging.basicConfig(
         level=logging.INFO,
@@ -44,6 +56,7 @@ def main() -> None:
         "password": os.getenv("PASSWORD"),
         "database": os.getenv("DATABASE"),
     }
+
 
     try:
         db_manager = DBManager(**db_config)

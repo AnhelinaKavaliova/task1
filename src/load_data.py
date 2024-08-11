@@ -8,6 +8,9 @@ logger = logging.getLogger("load_data")
 
 
 class LoadData:
+    """
+    Loads data into the database from JSON files
+    """
     def __init__(self, db_manager: DBManager) -> None:
         self.db_manager = db_manager
 
