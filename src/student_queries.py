@@ -10,6 +10,7 @@ class Queries:
     """
     Provides methods for executing specific queries related to students and rooms
     """
+
     def __init__(self, db_manager: DBManager):
         self.db_manager = db_manager
 

@@ -11,6 +11,7 @@ class DataExporter:
     """
     Exports data to various file formats (JSON or XML)
     """
+
     def export_results(self, format: str, data: Dict[str, Any], filename: str) -> None:
 
         logger.info(f"Export results to {format}")

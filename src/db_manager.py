@@ -10,6 +10,7 @@ class DBManager:
     """
     Manages the connection to a MySQL database and provides methods for executing queries
     """
+
     def __init__(self, host: str, user: str, password: str, database: str) -> None:
         try:
             self.mydb = mysql.connector.connect(
