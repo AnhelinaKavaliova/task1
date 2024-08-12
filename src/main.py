@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import logging.config
 import os
 from typing import Dict, List, Tuple, Union
 
@@ -31,7 +32,6 @@ def main() -> None:
 
     logging.basicConfig(
         level=logging.INFO,
-        filename="py_log.log",
         format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
     )
     logger.info("Program started")
@@ -44,13 +44,6 @@ def main() -> None:
     )
     parser.add_argument("--output_name", help="Output file name", default="Output")
     args = parser.parse_args()
-
-    try:
-        load_dotenv(dotenv_path="../.env")
-        logger.info("Configuration loaded successfully")
-    except Exception as err:
-        logger.error(f"Error: {err}")
-        return
 
     db_config: Dict[str, str] = {
         "host": os.getenv("HOST"),

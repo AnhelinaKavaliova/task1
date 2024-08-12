@@ -60,16 +60,6 @@ The script should be written using Object-Oriented Programming (OOP) and adhere 
     docker-compose up --build
     ```
 
-## Usage
-
-1. **Run the Python application using the following command:**
-
-    ```bash
-    docker-compose run pythonapp python src/main.py data/students.json data/rooms.json --format json --output_name output
-    ```
-
-2. **Logs of the program will be saved in `py_log.log`.**
-
 ## Project Files
 
 - `Dockerfile`: Configuration for building the Python image

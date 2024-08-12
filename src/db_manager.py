@@ -19,6 +19,7 @@ class DBManager:
             logger.info("Db connected")
         except mysql.connector.Error as err:
             logger.error(f"Failed to connect: {err}")
+            raise
 
     def execute_query(self, query: str) -> List[Tuple[Any, ...]]:
         try:

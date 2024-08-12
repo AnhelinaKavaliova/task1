@@ -35,7 +35,6 @@ def test_main_logging_success(
         main()
 
         mock_logger.info.assert_any_call("Program started")
-        mock_logger.info.assert_any_call("Configuration loaded successfully")
         mock_logger.info.assert_any_call("Db connected")
         mock_logger.info.assert_any_call("Loading data from rooms file")
         mock_logger.info.assert_any_call("Loading data from students file")
