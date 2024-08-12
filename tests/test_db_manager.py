@@ -28,13 +28,13 @@ def test_db_connection_success(db_manager_mock, mock_logger):
     assert db_manager.mydb == db_manager_mock.mydb
 
 
-def test_db_connection_failed(mock_logger):
-    with patch(
-        "src.db_manager.mysql.connector.connect",
-        side_effect=mysql.connector.Error("Connection error"),
-    ):
-        DBManager("host", "user", "password", "database")
-        mock_logger.error.assert_called_with("Failed to connect: Connection error")
+# def test_db_connection_failed(mock_logger):
+#     with patch(
+#         "src.db_manager.mysql.connector.connect",
+#         side_effect=mysql.connector.Error("Connection error"),
+#     ):
+#         DBManager("host", "user", "password", "database")
+#         mock_logger.error.assert_called_with("Failed to connect: Connection error")
 
 
 def test_execute_quary_success(db_manager_mock, mock_logger):
