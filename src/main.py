@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import logging
 import os
@@ -67,8 +69,8 @@ def main() -> None:
     query_executor = Queries(db_manager)
     data_exporter = DataExporter()
 
-    db_manager.execute_query("DELETE FROM students")  # clearing tables for testing
-    db_manager.execute_query("DELETE FROM rooms")
+    # db_manager.execute_query("DELETE FROM students")  # clearing tables for testing
+    # db_manager.execute_query("DELETE FROM rooms")
 
     try:
         logger.info("Loading data from rooms file")

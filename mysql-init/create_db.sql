@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS students (
 	id INT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     birthday DATE NOT NULL,
-    id_room INT,
+    room INT,
     sex CHAR(1),
-    FOREIGN KEY (id_room) REFERENCES rooms(id)
+    FOREIGN KEY (room) REFERENCES rooms(id)
 );
