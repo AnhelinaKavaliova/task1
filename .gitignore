@@ -6,3 +6,6 @@ global_requirements.txt
 .pytest_cache/
 docker-compose.test.yml
 docker-compose.test1.yml
+output.json
+output.xml
+output_file.xml
