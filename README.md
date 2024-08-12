@@ -65,7 +65,7 @@ The script should be written using Object-Oriented Programming (OOP) and adhere 
 1. **Run the Python application using the following command:**
 
     ```bash
-    python src/main.py data/students.json data/rooms.json --format json --output_name output
+    docker-compose run pythonapp python src/main.py data/students.json data/rooms.json --format json --output_name output
     ```
 
 2. **Logs of the program will be saved in `py_log.log`.**

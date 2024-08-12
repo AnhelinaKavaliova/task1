@@ -3,7 +3,7 @@ services:
     build:
       context: .
     env_file: .env
-    command: sh -c "sleep 10s; python /app/src/main.py /app/data/students.json /app/data/rooms.json --format json --output_name output"
+    command: sh -c "sleep 30s; python /app/src/main.py /app/data/students.json /app/data/rooms.json --format json --output_name output"
     depends_on:
       - mysql_db
 
